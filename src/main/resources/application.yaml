@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: zookeeper-console
+  datasource:
+    url: jdbc:h2:file:./h2-local-database
+    driver-class-name: org.h2.Driver
+    username: root
+    password: root
+    schema: classpath:scripts/database.sql
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  freemarker:
+    cache: false
+    charset: UTF-8
+    request-context-attribute: context
+    check-template-location: true
+server:
+  port: 9091
