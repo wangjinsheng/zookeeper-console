@@ -201,7 +201,7 @@ function initPathTree() {
                                 $('#scheme').val(response.data.aclMetadata.scheme);
                             }
                             if (response.data.data) {
-                                $('#node-data-textarea').html(response.data.data);
+                                $('#node-data-textarea').val(response.data.data);
                             }
                         } else {
                             toastr.error('Get data info failed for path [' + node.fullPath + ']！', 'Error');
