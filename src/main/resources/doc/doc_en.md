@@ -16,6 +16,8 @@ Zookeeper-Console is a Zookeeper visual web application based on SpringBoot、Cu
 - Then cd /zookeeper-console.
 - Run Maven command `mvn package` and zookeeper-console.jar will be found in the fold `/target`,use `java -jar zookeeper-console.jar` to run it.
 
+**The default server port of the embedded tomcat server is 9091,access http://localhost:9091/ to enter the operation page.**
+
 ## usage
 - 1、Add one zookeeper row.
 
