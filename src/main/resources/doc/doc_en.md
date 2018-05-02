@@ -14,7 +14,7 @@ Zookeeper-Console is a Zookeeper visual web application based on SpringBoot、Cu
 ### package
 - Download this project to local.
 - Then cd /zookeeper-console.
-- Run Maven command `mvn package` and zookeeper-console.jar will be found in fold `/target`,use `java -jar zookeeper-console.jar` to run it.
+- Run Maven command `mvn package` and zookeeper-console.jar will be found in the fold `/target`,use `java -jar zookeeper-console.jar` to run it.
 
 ## usage
 - 1、Add one zookeeper row.
