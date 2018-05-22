@@ -207,12 +207,48 @@ function initPathTree() {
                             toastr.error('Get data info failed for path [' + node.fullPath + ']！', 'Error');
                         }
                     });
+                },
+                onNodeExpanded:function(event, node) {
+                    $.getJSON('/treeNext', {id: id, path: node.fullPath, rnd: Math.random()}, function (result) {
+                        if (result){
+                            var itemlist = result[0];
+                            for (var index = 0; index < itemlist.nodes.length; index++) {
+                                var item = itemlist.nodes[index];
+                                var addNode =[node.nodeId, { node: { text: item.text, path: item.path,parentPath:item.parentPath,fullPath:item.fullPath,href:item.href,nodes:item.nodes }, silent: true }];
+                                $("#path_tree").treeview("addNode", addNode);
+                            }
+                        }
+                    });
+                },
+                onNodeCollapsed: function(event, node) {
+                    var childs = getChildNodeIdArr(node);
+                    for(item in childs){
+                        $("#path_tree").treeview("deleteNode", [childs[item]]);
+                    }
                 }
             });
+
         });
     });
 }
 
+function getChildNodeIdArr(node) {
+    var ts = [];
+    if(node.nodes) {
+        for(x in node.nodes) {
+            ts.push(node.nodes[x].nodeId);
+            // if(node.nodes[x].nodes) {
+            //     var getNodeDieDai = getChildNodeIdArr(node.nodes[x]);//有第二层，第三层子节点的情况
+            //     for(j in getNodeDieDai) {
+            //         ts.push(getNodeDieDai[j]);
+            //     }
+            // }
+        }
+    } else {
+        ts.push(node.nodeId);
+    }
+    return ts;
+}
 
 function loadSelectedNodeInfo(id, fullPath) {
     $.getJSON('/node', {id: id, path: fullPath, rnd: Math.random()}, function (response) {

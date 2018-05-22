@@ -54,7 +54,7 @@ public class ZookeeperConsoleService {
 			for (ZookeeperInfo zookeeperInfo : zookeeperInfoList) {
 				try {
 					curatorFrameworkManager.registerCuratorFramework(zookeeperInfo.getId(),
-							createAndStartCuratorFramework(zookeeperInfo.getConnectionString(), zookeeperInfo.getSessionTimeout()));
+						createAndStartCuratorFramework(zookeeperInfo.getConnectionString(), zookeeperInfo.getSessionTimeout()));
 				} catch (Exception e) {
 					log.error("Load curator failed for zookeeperInfo = {}", zookeeperInfo, e);
 				}
@@ -84,7 +84,7 @@ public class ZookeeperConsoleService {
 		Integer saveCount = zookeeperInfoDao.saveZookeeperInfo(zookeeperInfo);
 		if (ZookeeperConstant.ONE.equals(saveCount)) {
 			curatorFrameworkManager.registerCuratorFramework(zookeeperInfo.getId(),
-					createAndStartCuratorFramework(zookeeperInfo.getConnectionString(), zookeeperInfo.getSessionTimeout()));
+				createAndStartCuratorFramework(zookeeperInfo.getConnectionString(), zookeeperInfo.getSessionTimeout()));
 		}
 		return Boolean.TRUE;
 	}
@@ -96,7 +96,7 @@ public class ZookeeperConsoleService {
 		if (ZookeeperConstant.ONE.equals(updateCount)) {
 			curatorFrameworkManager.removeCuratorFramework(zookeeperInfo.getId());
 			curatorFrameworkManager.registerCuratorFramework(zookeeperInfo.getId(),
-					createAndStartCuratorFramework(zookeeperInfo.getConnectionString(), zookeeperInfo.getSessionTimeout()));
+				createAndStartCuratorFramework(zookeeperInfo.getConnectionString(), zookeeperInfo.getSessionTimeout()));
 		}
 		return Boolean.TRUE;
 	}
@@ -125,15 +125,12 @@ public class ZookeeperConsoleService {
 				node.setHref(String.format("%s%s", "#", node.getPath()));
 				node.setText(node.getPath());
 				node.setFullPath(ZookeeperConstant.ROOT_PATH.equals(path) ? String.format("%s%s", path, child)
-						: String.format("%s%s%s", path, ZookeeperConstant.ROOT_PATH, child));
+					: String.format("%s%s%s", path, ZookeeperConstant.ROOT_PATH, child));
 				node.setParentPath(path);
-				List<PathTreeNode> pathTreeNodes = buildPathTreeNodeListByPath(id, node.getFullPath());
-				if (null == pathTreeNodes || pathTreeNodes.isEmpty()) {
-					PathTreeState state = new PathTreeState();
-					state.setExpanded(Boolean.FALSE);
-					node.setState(state);
-				} else {
-					node.setNodes(pathTreeNodes);
+
+				List<String> childrenNodes = curator.getChildren().forPath(node.getFullPath());
+				if (!childrenNodes.isEmpty()){
+					node.setNodes(new ArrayList<>());
 				}
 				pathTreeNodeList.add(node);
 			}
@@ -160,14 +157,14 @@ public class ZookeeperConsoleService {
 		} else {
 			if (StringUtils.hasLength(data)) {
 				curator.create().creatingParentsIfNeeded()
-						.withMode(CreateMode.PERSISTENT)
-						.withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)
-						.forPath(path, data.getBytes(ZookeeperConstant.CHARSET));
+					.withMode(CreateMode.PERSISTENT)
+					.withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)
+					.forPath(path, data.getBytes(ZookeeperConstant.CHARSET));
 			} else {
 				curator.create().creatingParentsIfNeeded()
-						.withMode(CreateMode.PERSISTENT)
-						.withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)
-						.forPath(path);
+					.withMode(CreateMode.PERSISTENT)
+					.withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)
+					.forPath(path);
 			}
 			return Boolean.TRUE;
 		}
@@ -205,6 +202,9 @@ public class ZookeeperConsoleService {
 
 	private String getNodeData(CuratorFramework curator, String path) throws Exception {
 		byte[] bytes = curator.getData().forPath(path);
+		if (bytes == null){
+			return "";
+		}
 		return new String(bytes, Charset.forName(ZookeeperConstant.CHARSET));
 	}
 
@@ -265,10 +265,10 @@ public class ZookeeperConsoleService {
 
 	private CuratorFramework createAndStartCuratorFramework(String connectionString, Integer sessionTimeout) throws Exception {
 		CuratorFramework curatorFramework = CuratorFrameworkFactory.builder()
-				.connectString(connectionString)
-				.sessionTimeoutMs(sessionTimeout)
-				.retryPolicy(RETRY_POLICY)
-				.build();
+			.connectString(connectionString)
+			.sessionTimeoutMs(sessionTimeout)
+			.retryPolicy(RETRY_POLICY)
+			.build();
 		curatorFramework.start();
 		return curatorFramework;
 	}

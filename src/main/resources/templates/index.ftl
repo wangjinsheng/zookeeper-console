@@ -66,19 +66,24 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12" id="zookeeper-table-div">
-              <#include "zookeeper_table.ftl">
+        <#include "zookeeper_table.ftl">
         </div>
+
         <div class="col-md-12" id="data-div">
             <input id="zookeeper-id" type="text" hidden>
+            <div id="path_tree_btn_div" class="input-group glideDiv0" style="margin-top: 15px;display: none;">
+                <button id="btn-add-node" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
+                <button id="btn-del-node" style="margin-left: 15px" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span></button>
+            </div>
             <div class="col-md-4" id="path-tree-div">
-                 <#include "path_tree.ftl">
+            <#include "path_tree.ftl">
             </div>
             <div class="col-md-8" id="node-data-div">
-                <#include "node_data.ftl">
+            <#include "node_data.ftl">
             </div>
         </div>
     </div>
-    <#include "footer.ftl">
+<#include "footer.ftl">
 </div>
 <script src="${base}/js/console.js"></script>
 <!-- 外部引入的模态框 -->
