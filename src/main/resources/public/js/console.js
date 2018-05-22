@@ -202,6 +202,8 @@ function initPathTree() {
                             }
                             if (response.data.data) {
                                 $('#node-data-textarea').val(response.data.data);
+                            }else {
+                                $('#node-data-textarea').val("");
                             }
                         } else {
                             toastr.error('Get data info failed for path [' + node.fullPath + ']！', 'Error');
