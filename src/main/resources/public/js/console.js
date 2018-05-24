@@ -1,4 +1,5 @@
 $(function () {
+    $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
     loadCopyRight();
     deleteConfirmZookeeper();
     saveZookeeper();

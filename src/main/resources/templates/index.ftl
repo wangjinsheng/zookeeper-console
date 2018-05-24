@@ -19,6 +19,7 @@
     <script src="${base}/js/bootstrap-treeview.js"></script>
     <script src="${base}/js/toastr.min.js"></script>
     <script src="${base}/js/bootstrapValidator.js"></script>
+    <script src="${base}/js/jquery.blockUI.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
